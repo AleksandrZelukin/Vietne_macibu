@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>Skolēns – EduKlase</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+    <h2>EduKlase</h2>
+    <a href="/logout">Iziet</a>
+</header>
+
+<main>
+    <div class="card">
+        <h3>Skolēns: {{ name }}</h3>
+        <p>Vidējā atzīme: <strong>{{ average }}</strong></p>
+    </div>
+
+    <table>
+        <tr>
+            <th>Priekšmets</th>
+            <th>Atzīme</th>
+            <th>Datums</th>
+        </tr>
+
+        {% for g in grades %}
+        <tr>
+            <td>{{ g[0] }}</td>
+            <td>{{ g[1] }}</td>
+            <td>{{ g[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</main>
+
+</body>
+</html>

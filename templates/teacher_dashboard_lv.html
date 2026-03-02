@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>Skolotājs – EduKlase</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+    <h2>EduKlase</h2>
+    <a href="/logout">Iziet</a>
+</header>
+
+<main>
+   
+    <div class="card">
+        <h3>Pievienot atzīmi</h3>
+
+        <form method="post" action="/add_grade">
+            <select name="student" required>
+                <option value="">Skolēns</option>
+                {% for s in students %}
+                    <option value="{{ s[0] }}">{{ s[1] }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="subject" required>
+                <option value="">Priekšmets</option>
+                {% for sub in subjects %}
+                    <option value="{{ sub[0] }}">{{ sub[1] }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="number" name="grade" min="1" max="10" placeholder="Atzīme" required>
+
+            <button>Pievienot</button>
+        </form>
+         <a class="button" href="/class_journal">Atvērt klases žurnālu</a>
+    </div>
+</main>
+
+</body>
+</html>

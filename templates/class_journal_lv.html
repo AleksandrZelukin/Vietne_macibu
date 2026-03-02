@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>Klases žurnāls – EduKlase</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+    <h2>EduKlase</h2>
+    <nav>
+        <a href="/dashboard">Sākums</a>
+        <a href="/class_journal">Žurnāls</a>
+        <a href="/logout">Iziet</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Klases žurnāls</h2>
+
+    <table>
+        <tr>
+            <th>Skolēns</th>
+            <th>Klase</th>
+            <th>Priekšmets</th>
+            <th>Atzīme</th>
+            <th>Datums</th>
+        </tr>
+
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</main>
+
+</body>
+</html>
