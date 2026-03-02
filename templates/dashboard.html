@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>EduKlase – Pārvaldīšanas panelis</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+    <h2>EduKlase</h2>
+    <a href="/logout">Iziet</a>
+</header>
+
+<main>
+    <div class="card">
+        <h3>Laipni lūdzam, {{ user }}</h3>
+        <p>Role: {{ role }}</p>
+
+        {% if role == "teacher" %}
+            <p>Access: klases žurnāls</p>
+        {% else %}
+            <p>Access: skatīt atzīmes</p>
+        {% endif %}
+    </div>
+</main>
+
+</body>
+</html>

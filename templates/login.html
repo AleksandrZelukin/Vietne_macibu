@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>EduKlase – Ieeja</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="login-body">
+
+<div class="login-box">
+    <h1>EduKlase</h1>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        <input type="text" name="username" placeholder="Lietotājvārds" required>
+        <input type="password" name="password" placeholder="Parole" required>
+        <button type="submit">Ieeja</button>
+    </form>
+
+    <p class="hint">
+        student / 1234<br>
+        teacher / teacher123
+    </p>
+</div>
+
+</body>
+</html>
