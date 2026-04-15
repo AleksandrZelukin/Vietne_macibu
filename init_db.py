@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS grades (
 users = [
     ("anna", generate_password_hash("1234"), "student"),
     ("peter", generate_password_hash("1234"), "student"),
-    ("teacher", generate_password_hash("teacher123"), "teacher")
+    ("teacher", generate_password_hash("teacher"), "teacher")
 ]
 
 c.executemany(

@@ -10,6 +10,8 @@
 <header>
     <h2>EduKlase</h2>
     <a href="/logout">Iziet</a>
+    <a href="/edit_teacher" class="button">Mans profils</a>
+    <a href="/add_teacher" class="button">+ Pievienot skolotāju</a>
 </header>
 
 <main>
@@ -37,10 +39,31 @@
             <button>Pievienot</button>
         </form>
          <a class="button" href="/class_journal">Atvērt klases žurnālu</a>
-         <td>
-    <a href="/edit_student/{{ student[0] }}">Rediģēt</a>
-</td>
+         
     </div>
+    <div class="card">
+    <h3>Skolēnu saraksts</h3>
+
+    <table>
+        <tr>
+            <th>Vārds, uzvārds</th>
+            <th>Klase</th>
+            <th>Darbības</th>
+        </tr>
+
+        {% for student in students %}
+        <tr>
+            <td>{{ student[1] }}</td>
+            <td>{{ student[2] }}</td>
+            <td>
+                <a class="button" href="/edit_student/{{ student[0] }}">
+                    Rediģēt
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 </main>
 
 </body>

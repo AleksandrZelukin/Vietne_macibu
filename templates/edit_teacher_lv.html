@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>Skolotāja profils</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+    <h2>Skolotāja profils</h2>
+    <a href="/dashboard">Atpakaļ</a>
+</header>
+
+<main>
+    <div class="card">
+        <form method="post">
+            <label>Vārds, uzvārds:</label>
+<input type="text" name="full_name" value="{{ full_name }}" required>
+
+<label>Lietotājvārds:</label>
+<input type="text" name="username" value="{{ username }}" required>
+
+<label>Jauna parole (nav obligāti):</label>
+<input type="password" name="password">
+            <button>Saglabāt</button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

@@ -73,7 +73,12 @@ def dashboard():
         )
 
     # ===== teacher =====
-    students = query_db("SELECT id, full_name FROM students")
+    # students = query_db("SELECT id, full_name FROM students")
+    students = query_db("""
+    SELECT students.id, students.full_name, students.class
+    FROM students
+    ORDER BY students.class, students.full_name
+""")
     subjects = query_db("SELECT id, name FROM subjects")
 
     return render_template(
@@ -222,5 +227,129 @@ def edit_student(student_id):
         "edit_student_lv.html",
         student=student
     )
+from werkzeug.security import generate_password_hash
+
+# @app.route("/edit_teacher", methods=["GET", "POST"])
+# def edit_teacher():
+#     if session.get("role") != "teacher":
+#         return redirect("/")
+
+#     user_id = session["user_id"]
+
+#     conn = sqlite3.connect("school.db")
+#     c = conn.cursor()
+
+#     # получаем данные учителя
+#     c.execute(
+#         "SELECT username FROM users WHERE id = ?",
+#         (user_id,)
+#     )
+#     user = c.fetchone()
+
+#     if request.method == "POST":
+#         username = request.form["username"]
+#         password = request.form["password"]
+
+#         # обновляем логин
+#         c.execute(
+#             "UPDATE users SET username = ? WHERE id = ?",
+#             (username, user_id)
+#         )
+
+#         # если введён новый пароль
+#         if password:
+#             c.execute(
+#                 "UPDATE users SET password = ? WHERE id = ?",
+#                 (generate_password_hash(password), user_id)
+#             )
+
+#         conn.commit()
+#         conn.close()
+#         return redirect("/dashboard")
+@app.route("/edit_teacher", methods=["GET", "POST"])
+def edit_teacher():
+    if session.get("role") != "teacher":
+        return redirect("/")
+
+    user_id = session["user_id"]
+
+    conn = sqlite3.connect("school.db")
+    c = conn.cursor()
+
+    c.execute(
+        "SELECT username, full_name FROM users WHERE id = ?",
+        (user_id,)
+    )
+    user = c.fetchone()
+
+    if request.method == "POST":
+        username = request.form["username"]
+        full_name = request.form["full_name"]
+        password = request.form["password"]
+
+        c.execute("""
+            UPDATE users
+            SET username = ?, full_name = ?
+            WHERE id = ?
+        """, (username, full_name, user_id))
+
+        if password:
+            c.execute("""
+                UPDATE users
+                SET password = ?
+                WHERE id = ?
+            """, (generate_password_hash(password), user_id))
+
+        conn.commit()
+        conn.close()
+        return redirect("/dashboard")
+
+    conn.close()
+    return render_template(
+        "edit_teacher_lv.html",
+        username=user[0],
+        full_name=user[1]
+    )
+    conn.close()
+    return render_template(
+        "edit_teacher_lv.html",
+        username=user[0]
+    )
+@app.route("/add_teacher", methods=["GET", "POST"])
+def add_teacher():
+    if session.get("role") != "teacher":
+        return redirect("/")
+
+    error = None
+
+    if request.method == "POST":
+        username = request.form["username"]
+        full_name = request.form["full_name"]
+        password = request.form["password"]
+
+        conn = sqlite3.connect("school.db")
+        c = conn.cursor()
+
+        c.execute("SELECT id FROM users WHERE username = ?", (username,))
+        if c.fetchone():
+            error = "Lietotājvārds jau eksistē"
+        else:
+            c.execute("""
+                INSERT INTO users (username, password, role, full_name)
+                VALUES (?, ?, 'teacher', ?)
+            """, (
+                username,
+                generate_password_hash(password),
+                full_name
+            ))
+
+            conn.commit()
+            conn.close()
+            return redirect("/dashboard")
+
+        conn.close()
+
+    return render_template("add_teacher_lv.html", error=error)
+
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5050, debug=True)
+    app.run(host="0.0.0.0", port=5050, debug=True)
