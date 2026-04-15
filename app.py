@@ -161,5 +161,66 @@ def register():
         conn.close()
 
     return render_template("register_lv.html", error=error)
+
+from werkzeug.security import generate_password_hash
+
+@app.route("/edit_student/<int:student_id>", methods=["GET", "POST"])
+def edit_student(student_id):
+    if session.get("role") != "teacher":
+        return redirect("/")
+
+    conn = sqlite3.connect("school.db")
+    c = conn.cursor()
+
+    # Получаем данные ученика + пользователя
+    c.execute("""
+        SELECT students.full_name, students.class, users.username, users.id
+        FROM students
+        JOIN users ON students.user_id = users.id
+        WHERE students.id = ?
+    """, (student_id,))
+    student = c.fetchone()
+
+    if not student:
+        conn.close()
+        return redirect("/dashboard")
+
+    if request.method == "POST":
+        full_name = request.form["full_name"]
+        student_class = request.form["class"]
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # обновляем ученика
+        c.execute("""
+            UPDATE students
+            SET full_name = ?, class = ?
+            WHERE id = ?
+        """, (full_name, student_class, student_id))
+
+        # обновляем пользователя
+        c.execute("""
+            UPDATE users
+            SET username = ?
+            WHERE id = ?
+        """, (username, student[3]))
+
+        # если введён новый пароль
+        if password:
+            c.execute("""
+                UPDATE users
+                SET password = ?
+                WHERE id = ?
+            """, (generate_password_hash(password), student[3]))
+
+        conn.commit()
+        conn.close()
+        return redirect("/dashboard")
+
+    conn.close()
+    return render_template(
+        "edit_student_lv.html",
+        student=student
+    )
 if __name__ == "__main__":
-    app.run(host="10.1.50.74", port=5050, debug=True)
+    app.run(host="127.0.0.1", port=5050, debug=True)

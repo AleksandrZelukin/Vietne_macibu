@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>Rediģēt skolēnu</title>
+</head>
+<body>
+    <h2>Rediģēt skolēna datus</h2>
+
+    <form method="post">
+        <label>Vārds, uzvārds:</label><br>
+        <input type="text" name="full_name" value="{{ student[0] }}" required><br><br>
+
+        <label>Klase:</label><br>
+        <input type="text" name="class" value="{{ student[1] }}" required><br><br>
+
+        <label>Lietotājvārds:</label><br>
+        <input type="text" name="username" value="{{ student[2] }}" required><br><br>
+
+        <label>Jauna parole (nav obligāti):</label><br>
+        <input type="password" name="password"><br><br>
+
+        <button type="submit">Saglabāt izmaiņas</button>
+    </form>
+
+    <p><a href="/dashboard">Atpakaļ</a></p>
+</body>
+</html>
