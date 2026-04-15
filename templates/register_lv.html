@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>Reģistrācija</title>
+</head>
+<body>
+    <h2>Skolēna reģistrācija</h2>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        <label>Lietotājvārds:</label><br>
+        <input type="text" name="username" required><br><br>
+
+        <label>Parole:</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <label>Vārds, uzvārds:</label><br>
+        <input type="text" name="full_name" required><br><br>
+
+        <label>Klase:</label><br>
+        <input type="text" name="class" placeholder="10.A" required><br><br>
+
+        <button type="submit">Reģistrēties</button>
+    </form>
+
+    <p><a href="/">Atpakaļ uz pieslēgšanos</a></p>
+</body>
+</html>

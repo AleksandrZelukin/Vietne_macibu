@@ -119,6 +119,47 @@ def logout():
     session.clear()
     return redirect("/")
 
+from werkzeug.security import generate_password_hash
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    error = None
+
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        full_name = request.form["full_name"]
+        student_class = request.form["class"]
+
+        conn = sqlite3.connect("school.db")
+        c = conn.cursor()
+
+        # проверка: существует ли пользователь
+        c.execute("SELECT id FROM users WHERE username = ?", (username,))
+        if c.fetchone():
+            error = "Lietotājvārds jau eksistē"
+        else:
+            # 1. создаём пользователя
+            password_hash = generate_password_hash(password)
+            c.execute(
+                "INSERT INTO users (username, password, role) VALUES (?, ?, 'student')",
+                (username, password_hash)
+            )
+            user_id = c.lastrowid
+
+            # 2. создаём ученика
+            c.execute(
+                "INSERT INTO students (full_name, class, user_id) VALUES (?, ?, ?)",
+                (full_name, student_class, user_id)
+            )
+
+            conn.commit()
+            conn.close()
+
+            return redirect("/")
+
+        conn.close()
+
+    return render_template("register_lv.html", error=error)
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    app.run(host="10.1.50.74", port=5050, debug=True)
